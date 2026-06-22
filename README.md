@@ -2,6 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/Zhonghao1995/SWMMCanada/actions/workflows/ci.yml"><img src="https://github.com/Zhonghao1995/SWMMCanada/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://github.com/Zhonghao1995/SWMMCanada/releases/latest"><img src="https://img.shields.io/github/v/release/Zhonghao1995/SWMMCanada?label=release&color=1F6FEB" alt="latest release" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="MIT license" /></a>
   <img src="https://img.shields.io/badge/status-early%20development-orange" alt="Status: early development" />
   <img src="https://img.shields.io/badge/EPA%20SWMM-5.2-1F6FEB" alt="EPA SWMM 5.2" />
@@ -12,6 +13,9 @@
 **Draw an area anywhere in Canada and get a ready-to-run EPA SWMM stormwater model.**
 
 You draw (or upload) a boundary on the map. SWMMCanada pulls the Canadian open data for that spot — rainfall, terrain, land cover, soil, and the city's storm pipes — and assembles a complete `model.inp` you can open and run in EPA SWMM. No hunting across data portals, no manual setup.
+
+> [!WARNING]
+> **Models are not calibrated.** SWMMCanada gets you a complete, runnable model fast — but the parameters (rainfall losses, roughness, curve numbers) are first-pass estimates. Calibrate against observations before using any results for design or decisions.
 
 <p align="center">
   <img src="results/victoria_app.png" width="820" alt="The SWMMCanada web app after building downtown Victoria: real storm network and parcel-shaped subcatchments on the map, with the build mode and model layers in the side panel" />
@@ -27,7 +31,7 @@ SWMMCanada chooses how to build the network from **where you draw** — you don'
 | **Real network** | uses the city's published storm pipes — real inverts, diameters, manholes, and outfalls | cities that publish a storm network (now **Victoria** and **Ottawa**) |
 | **Synthesize** | builds a realistic network from the street map + open data | anywhere else in Canada |
 
-Either mode then gives you the same things: subcatchments, rainfall, and a shareable data package. Where a city also publishes parcels (like Victoria), the subcatchments follow real lot lines. These are starting-point models — they run clean in EPA SWMM 5.2, but the parameters aren't calibrated yet.
+Either mode then gives you the same things: subcatchments, rainfall, and a shareable data package. Where a city also publishes parcels (like Victoria), the subcatchments follow real lot lines.
 
 ## Try it
 
