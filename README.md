@@ -47,6 +47,27 @@ aoi = aoi_from_geojson({"type": "Polygon", "coordinates": [...]})
 build_from_aoi(aoi, date(2022, 6, 1), date(2022, 6, 7), "out/")
 ```
 
+## Project structure
+
+```
+backend/swmmcanada/      # Python pipeline: open data -> SWMM model
+  geo/         AOI parsing, station selection, CRS
+  acquire/     ECCC climate · NRCan DEM · NALCMS land cover · SoilGrids soil · HYDAT flow
+  sources/     live data adapters (climate, DEM, land cover, soil, OSM streets)
+    cities/    base.py (shared assembler) + victoria.py + ottawa.py  (real-network cities)
+  network/     street-graph synthesis + Voronoi subcatchments (synthesize mode)
+  derive/      clip + zonal stats -> subcatchment parameters
+  build/       assemble + validate the SWMM .inp
+  datastore/   model-ready datastore (GeoPackage + netCDF + JSON)
+  api/         FastAPI async tasks API
+  pipeline.py  build_from_aoi · build_from_victoria · build_from_ottawa
+
+frontend/src/            # React + Vite + MapLibre web app
+  components/   MapPanel.tsx (map + draw AOI) · ControlPanel.tsx (build, layers, download)
+  lib/api.ts    backend client (submit, poll, preview, download)
+  store.ts      Zustand state · types.ts shared types
+```
+
 ## What you get
 
 A `model.inp` that runs in EPA SWMM 5.2, a `datastore/` package you can share (GeoPackage + netCDF + JSON), and map layers.
