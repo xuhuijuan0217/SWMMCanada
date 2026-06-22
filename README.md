@@ -18,12 +18,16 @@ You draw (or upload) a boundary on the map. SWMMCanada pulls the Canadian open d
 </p>
 <p align="center"><sub>The app after building a downtown Victoria area: real storm network (blue), outfalls (red), and parcel-shaped subcatchments (green), with the model ready to download.</sub></p>
 
-## Two ways it builds the network
+## Two modes (picked automatically)
 
-- **Real city pipes** — draw inside a city that publishes its storm network (right now **Victoria** and **Ottawa**) and it uses the real pipes, manholes, and outfalls. Where the city also publishes parcels (like Victoria), the subcatchments follow real lot lines.
-- **Synthesized** — anywhere else in Canada, it builds a realistic network from the street map and open data.
+SWMMCanada chooses how to build the network from **where you draw** — you don't set anything:
 
-Either way you also get subcatchments, rainfall, and a shareable data package. These are starting-point models: they run clean in EPA SWMM 5.2, but the parameters aren't calibrated yet.
+| Mode | What it does | Where it kicks in |
+|---|---|---|
+| **Real network** | uses the city's published storm pipes — real inverts, diameters, manholes, and outfalls | cities that publish a storm network (now **Victoria** and **Ottawa**) |
+| **Synthesize** | builds a realistic network from the street map + open data | anywhere else in Canada |
+
+Either mode then gives you the same things: subcatchments, rainfall, and a shareable data package. Where a city also publishes parcels (like Victoria), the subcatchments follow real lot lines. These are starting-point models — they run clean in EPA SWMM 5.2, but the parameters aren't calibrated yet.
 
 ## Try it
 
