@@ -30,6 +30,11 @@ Building a SWMM model from scratch is rarely one step. A typical project means l
 
 SWMMCanada provides a single path from a drawn area to a runnable model: it knows where the Canadian open data lives, how to align it, and how to assemble it into an EPA-SWMM-valid model with explicit provenance.
 
+<p align="center">
+  <img src="results/victoria_app.png" width="820" alt="The SWMMCanada web app after building downtown Victoria: real storm network and parcel-shaped subcatchments on the map, with the build mode and model layers in the side panel" />
+</p>
+<p align="center"><sub>The SWMMCanada web app after building a downtown Victoria area: the city's real storm network (pipes and junctions in blue, outfalls in red) and parcel-shaped subcatchments (green), with the auto-selected build mode, model-layer toggles, and download ready.</sub></p>
+
 ## What makes it different
 
 - **Two network modes, auto-selected by location.** Draw inside a city that publishes its storm network — currently Victoria and Ottawa — and SWMMCanada ingests the real pipes. Draw anywhere else in Canada and it synthesizes a network from the street graph and open data.
@@ -38,11 +43,6 @@ SWMMCanada provides a single path from a drawn area to a runnable model: it know
 - **Runnable and self-checking.** Every model round-trips through swmm-api and swmmio before it is returned, and the generated `model.inp` runs in EPA SWMM 5.2 with zero errors.
 - **A model-ready datastore, not just an INP.** Each build also writes a framework-independent hand-off: a GeoPackage (network and spatial layers), a netCDF/CF file (rainfall forcing), and a JSON file (configuration and provenance).
 - **Web app and library.** Draw or upload a boundary in a React and MapLibre interface backed by a FastAPI service, or call the same pipeline directly from Python.
-
-<p align="center">
-  <img src="results/victoria_app.png" width="820" alt="The SWMMCanada web app after building downtown Victoria: real storm network and parcel-shaped subcatchments on the map, with the build mode and model layers in the side panel" />
-</p>
-<p align="center"><sub>The SWMMCanada web app after building a downtown Victoria area: the city's real storm network (pipes and junctions in blue, outfalls in red) and parcel-shaped subcatchments (green), with the auto-selected build mode, model-layer toggles, and download ready.</sub></p>
 
 ## Two ways to get a network
 
