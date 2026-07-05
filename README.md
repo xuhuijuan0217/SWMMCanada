@@ -3,6 +3,7 @@
 </p>
 
 <p align="center">
+  <a href="https://www.h2ox.me/"><img src="https://img.shields.io/badge/website-h2ox.me-1F6FEB" alt="Project website at www.h2ox.me" /></a>
   <a href="https://swmm.h2ox.me/"><img src="https://img.shields.io/badge/demo-live-1F6FEB" alt="Live demo at swmm.h2ox.me" /></a>
   <a href="https://github.com/Zhonghao1995/SWMMCanada/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/Zhonghao1995/SWMMCanada/ci.yml?branch=main&label=CI" alt="CI" /></a>
   <a href="https://codecov.io/gh/Zhonghao1995/SWMMCanada"><img src="https://codecov.io/gh/Zhonghao1995/SWMMCanada/branch/main/graph/badge.svg" alt="codecov" /></a>
