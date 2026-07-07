@@ -4,6 +4,12 @@ SWMMCanada can ingest a city's **published storm-sewer open data** and turn it i
 model that runs clean in the **EPA SWMM 5.2 engine**. This page documents that, validated
 end-to-end on two Canadian cities with structurally different data.
 
+> [!IMPORTANT]
+> **"Zero engine errors" means runnable, not calibrated.** Every result below confirms the
+> model is *structurally sound* and executes in the EPA SWMM engine without error — it is
+> **not** a claim that the hydrology is accurate. Parameters are first-pass estimates from
+> open data; calibrate against observations before using any output for design or decisions.
+
 ## Summary
 
 | | **Victoria, BC** | **Ottawa, ON** |

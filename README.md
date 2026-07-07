@@ -21,6 +21,9 @@
 
 You draw (or upload) a boundary on the map. SWMMCanada pulls the Canadian open data for that spot (rainfall, terrain — 1 m LiDAR where available, land cover, soil, ECCC design-storm intensities, and the city's storm + sanitary pipes) and assembles a complete `model.inp` you can open and run in EPA SWMM. No hunting across data portals, no manual setup.
 
+> [!IMPORTANT]
+> **It builds runnable _first-pass_ models from open data — it is not a calibrated design tool by itself.** Every model is complete and runs clean in the EPA SWMM engine, but its parameters (rainfall losses, roughness, curve numbers) are first-pass estimates. Calibrate against observations before using any results for design or decisions.
+
 > [!TIP]
 > **🌐 Try it now. No install, no deployment.** A hosted **beta** is live at **[swmm.h2ox.me](https://swmm.h2ox.me/)**. Draw an area and build a SWMM model right in your browser.
 >
@@ -62,6 +65,12 @@ cd backend && python3.11 -m venv .venv && .venv/bin/pip install -e ".[dev]"
 
 # frontend (another terminal)
 cd frontend && npm install && npm run dev
+```
+
+**Verify the install offline** — no live data, no external APIs, a good first check right after cloning:
+
+```bash
+backend/.venv/bin/python backend/scripts/smoke_build.py   # builds a tiny runnable model.inp
 ```
 
 Running the whole thing in production (GHCR image + GitHub Pages) is documented in **[DEPLOY.md](DEPLOY.md)**.
@@ -135,7 +144,7 @@ If you use SWMMCanada in your work, please cite the preprint (APA):
 
 To cite a specific version of the software itself, also cite the archived release:
 
-> Zhang, Z. (2026). *SWMMCanada: ready-to-run EPA SWMM models anywhere in Canada from open data* (Version 0.1.1) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.21058544
+> Zhang, Z. (2026). *SWMMCanada: ready-to-run EPA SWMM models anywhere in Canada from open data* (Version 0.2.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.21058544
 
 BibTeX and other formats are available via **Cite this repository** in the GitHub sidebar (generated from [`CITATION.cff`](CITATION.cff)) — it resolves to the preprint above. The Zenodo DOI is the *concept DOI* — it always resolves to the latest software version.
 

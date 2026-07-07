@@ -1,0 +1,28 @@
+name: nightly-integration
+
+# Live end-to-end test against the real open-data chain (OSM Overpass · NRCan MRDEM ·
+# ECCC GeoMet). These are marked `integration` and excluded from the default CI, so a PR
+# never blocks on an upstream portal being slow or down. This job runs them on a schedule
+# so a broken data chain surfaces on its own, plus on-demand via the Actions "Run workflow"
+# button. Failure here means an upstream source changed/broke — not that a PR is bad.
+on:
+  schedule:
+    - cron: "0 6 * * 1"   # weekly, Mondays 06:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  integration:
+    name: backend (live integration)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: backend/pyproject.toml
+      - run: pip install -e ".[dev]"
+      - run: pytest -m integration -q
