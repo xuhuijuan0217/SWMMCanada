@@ -21,9 +21,6 @@
 
 You draw (or upload) a boundary on the map. SWMMCanada pulls the Canadian open data for that spot (rainfall, terrain — 1 m LiDAR where available, land cover, soil, ECCC design-storm intensities, and the city's storm + sanitary pipes) and assembles a complete `model.inp` you can open and run in EPA SWMM. No hunting across data portals, no manual setup.
 
-> [!IMPORTANT]
-> **It builds runnable _first-pass_ models from open data — it is not a calibrated design tool by itself.** Every model is complete and runs clean in the EPA SWMM engine, but its parameters (rainfall losses, roughness, curve numbers) are first-pass estimates. Calibrate against observations before using any results for design or decisions.
-
 > [!TIP]
 > **🌐 Try it now. No install, no deployment.** A hosted **beta** is live at **[swmm.h2ox.me](https://swmm.h2ox.me/)**. Draw an area and build a SWMM model right in your browser.
 >
@@ -126,7 +123,7 @@ More export targets plug into the same interface.
 SWMMCanada is the **first half** of a closed loop: it turns an area into a complete, runnable model. The **second half**, **[Agentic SWMM](https://github.com/Zhonghao1995/agentic-swmm-workflow)**, takes that model the rest of the way: it runs EPA SWMM for you, calibrates against observations, post-processes, and does uncertainty analysis. Hand a SWMMCanada package to Agentic SWMM and the loop closes: **open data → model → calibrated results with uncertainty.**
 
 > [!WARNING]
-> **Models are not calibrated.** SWMMCanada gets you a complete, runnable model fast, but the parameters (rainfall losses, roughness, curve numbers) are first-pass estimates. Calibrate against observations before using any results for design or decisions, which is exactly what **[Agentic SWMM](https://github.com/Zhonghao1995/agentic-swmm-workflow)** automates. Tired of tweaking parameters and plotting results by hand? Try Agentic SWMM: it does all the downstream work through plain natural-language chat (https://aiswmm.com/demo/), and every step stays auditable and transparent (https://doi.org/10.3390/aieng1010005).
+> **Models are not calibrated — SWMMCanada builds runnable _first-pass_ models from open data, not a calibrated design tool by itself.** It gets you a complete, runnable model fast, but the parameters (rainfall losses, roughness, curve numbers) are first-pass estimates. Calibrate against observations before using any results for design or decisions, which is exactly what **[Agentic SWMM](https://github.com/Zhonghao1995/agentic-swmm-workflow)** automates. Tired of tweaking parameters and plotting results by hand? Try Agentic SWMM: it does all the downstream work through plain natural-language chat (https://aiswmm.com/demo/), and every step stays auditable and transparent (https://doi.org/10.3390/aieng1010005).
 
 ## More
 
