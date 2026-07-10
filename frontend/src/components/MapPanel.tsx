@@ -36,8 +36,25 @@ const kindIs = (k: string): FilterSpecification => ['==', ['get', 'kind'], k] as
 const vis = (on: boolean) => ({ visibility: (on ? 'visible' : 'none') as 'visible' | 'none' })
 
 // Click-to-inspect (ADR 0019): the popup reads only what the preview GeoJSON already
-// carries. Rows are [label, property key, unit]; missing keys are skipped.
-const INSPECT_LAYERS = ['m-outfall', 'm-junction', 'm-conduit', 'm-sub-fill']
+// carries. Clicks hit the invisible fat "hit" layers (a 1.6px line is not a click
+// target); topmost declared wins: outfall > junction > conduit > subcatchment.
+const INSPECT_LAYERS = ['m-outfall-hit', 'm-junction-hit', 'm-conduit-hit', 'm-sub-fill']
+
+const KIND_COLORS: Record<string, string> = {
+  subcatchment: '#22c55e',
+  conduit: '#2563eb',
+  junction: '#1d4ed8',
+  outfall: '#ef4444',
+}
+
+// Pipe width encodes diameter (m -> px), clamped at the interpolation ends.
+const CONDUIT_WIDTH = [
+  'interpolate', ['linear'], ['get', 'diameter_m'],
+  0.2, 1.2,
+  0.45, 2.4,
+  0.9, 4.2,
+  1.8, 7,
+] as unknown as number
 const POPUP_ROWS: Record<string, [string, string, string?][]> = {
   subcatchment: [
     ['Area', 'area_ha', 'ha'],
@@ -182,11 +199,21 @@ export default function MapPanel() {
           paint={{ 'line-color': '#16a34a', 'line-width': 0.6, 'line-opacity': 0.55 }} />
         <Layer id="m-conduit" type="line" filter={kindIs('conduit')}
           layout={{ visibility: layers.conduits ? 'visible' : 'none', 'line-cap': 'round' }}
-          paint={{ 'line-color': '#2563eb', 'line-width': 1.6 }} />
+          paint={{ 'line-color': '#2563eb', 'line-width': CONDUIT_WIDTH }} />
         <Layer id="m-junction" type="circle" filter={kindIs('junction')} layout={vis(layers.junctions)}
-          paint={{ 'circle-radius': 2.6, 'circle-color': '#1d4ed8' }} />
+          paint={{ 'circle-radius': 3.4, 'circle-color': '#1d4ed8',
+                   'circle-stroke-width': 1, 'circle-stroke-color': '#ffffff' }} />
         <Layer id="m-outfall" type="circle" filter={kindIs('outfall')}
           paint={{ 'circle-radius': 7, 'circle-color': '#ef4444', 'circle-stroke-width': 2, 'circle-stroke-color': '#ffffff' }} />
+
+        {/* Invisible fat hit targets for click-to-inspect; declared last = queried first. */}
+        <Layer id="m-conduit-hit" type="line" filter={kindIs('conduit')}
+          layout={{ visibility: layers.conduits ? 'visible' : 'none' }}
+          paint={{ 'line-color': '#000000', 'line-width': 12, 'line-opacity': 0 }} />
+        <Layer id="m-junction-hit" type="circle" filter={kindIs('junction')} layout={vis(layers.junctions)}
+          paint={{ 'circle-radius': 9, 'circle-color': '#000000', 'circle-opacity': 0 }} />
+        <Layer id="m-outfall-hit" type="circle" filter={kindIs('outfall')}
+          paint={{ 'circle-radius': 12, 'circle-color': '#000000', 'circle-opacity': 0 }} />
       </Source>
 
       {/* AOI (committed) */}
@@ -208,30 +235,37 @@ export default function MapPanel() {
           longitude={picked.lng}
           latitude={picked.lat}
           anchor="bottom"
-          maxWidth="240px"
+          maxWidth="260px"
           closeButton
           closeOnClick={false}
           onClose={() => setPicked(null)}
         >
-          <div className="text-xs text-slate-700">
-            <div className="mb-1 font-semibold capitalize">
-              {String(picked.props.kind)} {String(picked.props.id ?? '')}
+          <div className="min-w-[176px]">
+            <div className="flex items-center gap-1.5 border-b border-slate-100 bg-slate-50 py-2 pl-3 pr-8">
+              <span
+                className="h-2.5 w-2.5 shrink-0 rounded-full"
+                style={{ background: KIND_COLORS[String(picked.props.kind)] ?? '#64748b' }}
+              />
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+                {String(picked.props.kind)}
+              </span>
+              <span className="ml-auto font-mono text-xs font-semibold text-slate-700">
+                {String(picked.props.id ?? '')}
+              </span>
             </div>
-            <table>
-              <tbody>
-                {(POPUP_ROWS[String(picked.props.kind)] ?? [])
-                  .filter(([, key]) => picked.props[key] !== undefined && picked.props[key] !== null)
-                  .map(([label, key, unit]) => (
-                    <tr key={key}>
-                      <td className="pr-2 text-slate-400">{label}</td>
-                      <td className="font-medium">
-                        {String(picked.props[key])}
-                        {unit ? ` ${unit}` : ''}
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
+            <div className="px-3 py-1.5">
+              {(POPUP_ROWS[String(picked.props.kind)] ?? [])
+                .filter(([, key]) => picked.props[key] !== undefined && picked.props[key] !== null)
+                .map(([label, key, unit]) => (
+                  <div key={key} className="flex items-baseline justify-between gap-4 py-[3px] text-xs">
+                    <span className="text-slate-400">{label}</span>
+                    <span className="font-medium text-slate-700">
+                      {String(picked.props[key])}
+                      {unit ? <span className="ml-0.5 font-normal text-slate-400">{unit}</span> : null}
+                    </span>
+                  </div>
+                ))}
+            </div>
           </div>
         </Popup>
       )}
