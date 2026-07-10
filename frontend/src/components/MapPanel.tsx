@@ -347,37 +347,37 @@ export default function MapPanel() {
 
     {/* Floating Layers card (top-left), Agentic-SWMM style */}
     {preview && (
-      <div className="absolute left-3 top-3 z-10 w-52 overflow-hidden rounded-xl bg-white/95 shadow-lg ring-1 ring-slate-900/5 backdrop-blur">
-        <div className="flex items-center gap-1.5 border-b border-slate-100 px-3 py-2">
-          <LayersIcon size={13} className="text-slate-500" />
-          <span className="text-xs font-semibold text-slate-700">Layers</span>
+      <div className="absolute left-3 top-3 z-10 w-64 overflow-hidden rounded-xl bg-white/95 shadow-lg ring-1 ring-slate-900/5 backdrop-blur">
+        <div className="flex items-center gap-2 border-b border-slate-100 px-3.5 py-2.5">
+          <LayersIcon size={16} className="text-slate-500" />
+          <span className="text-sm font-semibold text-slate-700">Layers</span>
         </div>
-        <div className="p-1.5">
+        <div className="p-2">
           {LAYER_ROWS.filter(([key]) => key !== 'sanitary' || layerCounts.sanitary > 0).map(
             ([key, label, color]) => (
               <button
                 key={key}
                 onClick={() => toggleLayer(key)}
-                className="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left text-xs hover:bg-slate-50"
+                className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-sm hover:bg-slate-50"
               >
                 <span
-                  className={`h-2.5 w-2.5 shrink-0 rounded-full ${layers[key] ? '' : 'opacity-25'}`}
+                  className={`h-3 w-3 shrink-0 rounded-full ${layers[key] ? '' : 'opacity-25'}`}
                   style={{ background: color }}
                 />
                 <span className={`flex-1 ${layers[key] ? 'text-slate-700' : 'text-slate-400'}`}>
                   {label}
                 </span>
-                <span className="text-[10px] tabular-nums text-slate-400">{layerCounts[key]}</span>
+                <span className="text-xs tabular-nums text-slate-400">{layerCounts[key]}</span>
                 {layers[key] ? (
-                  <Eye size={13} className="text-slate-400" />
+                  <Eye size={16} className="text-slate-400" />
                 ) : (
-                  <EyeOff size={13} className="text-slate-300" />
+                  <EyeOff size={16} className="text-slate-300" />
                 )}
               </button>
             ),
           )}
         </div>
-        <p className="border-t border-slate-100 px-3 py-1.5 text-[10px] leading-snug text-slate-400">
+        <p className="border-t border-slate-100 px-3.5 py-2 text-[11px] leading-snug text-slate-400">
           Width = pipe diameter · arrows = flow direction (zoom in) · click any element
         </p>
       </div>
@@ -385,10 +385,10 @@ export default function MapPanel() {
 
     {/* Floating info card (bottom-left): click-to-inspect, first-pass QC (ADR 0019) */}
     {picked && (
-      <div className="absolute bottom-6 left-3 z-10 w-60 overflow-hidden rounded-xl bg-white shadow-lg ring-1 ring-slate-900/5">
-        <div className="flex items-center gap-1.5 border-b border-slate-100 px-3 py-2">
+      <div className="absolute bottom-6 left-3 z-10 w-72 overflow-hidden rounded-xl bg-white shadow-lg ring-1 ring-slate-900/5">
+        <div className="flex items-center gap-2 border-b border-slate-100 px-3.5 py-2.5">
           <span
-            className="h-2.5 w-2.5 shrink-0 rounded-full"
+            className="h-3 w-3 shrink-0 rounded-full"
             style={{
               background:
                 picked.props.system === 'sanitary'
@@ -396,33 +396,33 @@ export default function MapPanel() {
                   : KIND_COLORS[String(picked.props.kind)] ?? '#64748b',
             }}
           />
-          <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
             {String(picked.props.kind)}
           </span>
-          <span className="ml-auto font-mono text-xs font-semibold text-slate-700">
+          <span className="ml-auto font-mono text-sm font-semibold text-slate-700">
             {String(picked.props.id ?? '')}
           </span>
           <button
             onClick={() => select(null)}
-            className="rounded p-0.5 text-slate-300 hover:bg-slate-100 hover:text-slate-500"
+            className="rounded p-1 text-slate-300 hover:bg-slate-100 hover:text-slate-500"
           >
-            <X size={13} />
+            <X size={15} />
           </button>
         </div>
-        <div className="px-3 py-1.5">
+        <div className="px-3.5 py-2">
           {(POPUP_ROWS[String(picked.props.kind)] ?? [])
             .filter(([, key]) => picked.props[key] !== undefined && picked.props[key] !== null)
             .map(([label, key, unit]) => (
-              <div key={key} className="flex items-baseline justify-between gap-4 py-[3px] text-xs">
+              <div key={key} className="flex items-baseline justify-between gap-4 py-1 text-sm">
                 <span className="text-slate-400">{label}</span>
                 <span className="font-medium text-slate-700">
                   {String(picked.props[key])}
-                  {unit ? <span className="ml-0.5 font-normal text-slate-400">{unit}</span> : null}
+                  {unit ? <span className="ml-1 text-xs font-normal text-slate-400">{unit}</span> : null}
                 </span>
               </div>
             ))}
         </div>
-        <div className="px-2.5 pb-2.5">
+        <div className="px-3 pb-3">
           <button
             onClick={() =>
               mapRef.current?.flyTo({
@@ -431,9 +431,9 @@ export default function MapPanel() {
                 duration: 700,
               })
             }
-            className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-700"
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700"
           >
-            <LocateFixed size={13} /> Fly to
+            <LocateFixed size={15} /> Fly to
           </button>
         </div>
       </div>
